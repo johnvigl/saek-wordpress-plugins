@@ -1,0 +1,491 @@
+That is excellent! Getting the folder structure set up early is the best thing you can do for a project of this size.
+
+For now, your tpm-style.css doesn't need to be massive. Because you are already using standard WordPress classes (like wp-list-table and button-primary), your theme is doing a lot of the heavy lifting.
+
+However, we can use this stylesheet to set up a clean foundation, handle responsive table behaviors, and prepare to move away from inline styles (like style="color:red;") in the future.
+
+Here is a great starter template for your tpm-style.css file. You can just copy and paste this in:
+
+CSS
+/* * TPM Portal Core Styles 
+ * This file handles the frontend appearance of the Teacher Portal shortcode.
+ */
+
+/* --- Main Container --- */
+#tpm-portal-container {
+    max-width: 900px; /* Keeps the portal from stretching too wide on large screens */
+    margin: 0 auto;
+    padding: 15px 0;
+}
+
+/* --- Typography & Headers --- */
+#tpm-portal-container h3, 
+#tpm-portal-container h4 {
+    color: #2271b1; /* WordPress admin blue */
+}
+
+/* --- Forms & Inputs --- */
+#tpm-portal-container label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+#tpm-portal-container input[type="email"],
+#tpm-portal-container input[type="text"],
+#tpm-portal-container input[type="date"],
+#tpm-portal-container textarea {
+    width: 100%;
+    max-width: 400px; /* Keeps inputs readable */
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #8c8f94;
+    border-radius: 4px;
+}
+
+#tpm-portal-container textarea {
+    max-width: 100%; /* Let textareas take full width */
+}
+
+/* --- Messages (Success / Error) --- */
+.tpm-message {
+    margin-top: 15px;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.tpm-error {
+    color: #d63638; /* WP Admin Red */
+    background: #fcf0f1;
+    border-left: 4px solid #d63638;
+}
+
+.tpm-success {
+    color: #00a32a; /* WP Admin Green */
+    background: #f0f7f4;
+    border-left: 4px solid #00a32a;
+}
+
+/* --- Step 3 Specifics --- */
+.tpm-hours-grid {
+    display: flex; 
+    flex-direction: column; 
+    gap: 8px; 
+    background: #fff; 
+    padding: 15px; 
+    border: 1px solid #ddd; 
+    border-radius: 4px;
+    max-width: 400px;
+}
+
+/* =========================================
+   DESKTOP TABLE STYLES
+   ========================================= */
+.tpm-classes-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.tpm-classes-table th, 
+.tpm-classes-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e2e4e7;
+}
+.tpm-classes-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #3c434a;
+}
+.tpm-classes-table tbody tr:hover {
+    background-color: #fcfcfc;
+}
+
+/* =========================================
+   MOBILE CARD STYLES (Max width 768px)
+   ========================================= */
+@media screen and (max-width: 768px) {
+    /* Hide the traditional table header */
+    .tpm-classes-table thead {
+        display: none; 
+    }
+    
+    /* Turn rows into cards */
+    .tpm-classes-table tbody tr {
+        display: block;
+        margin-bottom: 20px;
+        border: 1px solid #c3c4c7;
+        border-radius: 8px;
+        padding: 15px;
+        background: #fff;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    
+    /* Turn cells into flexbox rows inside the card */
+    .tpm-classes-table tbody td {
+        display: flex;
+        justify-content: flex-start; /* Data justified left instead of spaced out */
+        align-items: flex-start;     /* Top vertical alignment instead of center */
+        padding: 10px 0;
+        border-bottom: 1px solid #f0f0f1;
+        text-align: left;
+        gap: 10px; /* Adds a little breathing room between the label and the data */
+    }
+    
+    /* Remove border from the last item (the button) */
+	.tpm-classes-table tbody td:last-child {
+		border-bottom: none;
+		padding-bottom: 0;
+		justify-content: center; /* center horizontally */
+		margin-top: 15px;
+	}
+    
+    /* Pull the header label from the data-label attribute! */
+    .tpm-classes-table tbody td::before {
+        content: attr(data-label) ":"; /* Added the colon character here */
+        font-weight: 600;
+        color: #50575e;
+        text-align: left;
+        flex-basis: 35%; /* Keeps all labels the same width so the data aligns in a neat column */
+        flex-shrink: 0;  /* Prevents the label from squishing if the data text is long */
+    }
+
+    /* Hide the label for the button row */
+    .tpm-classes-table tbody td:last-child::before {
+        display: none; 
+    }
+
+    /* Button styling - no longer stretching */
+    .tpm-classes-table tbody td button {
+        width: auto; 
+        padding: 8px 20px;
+        font-size: 16px; 
+    }
+	
+	.tpm-select-class {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 8px; /* space between label and arrow */
+	}
+
+	.tpm-btn-label {
+		font-weight: 500;
+	}
+
+	.tpm-btn-arrow {
+		font-size: 16px;
+	}	
+}
+
+@media screen and (min-width: 769px) {
+    .tpm-btn-label {
+        display: none;
+    }
+}
+
+
+/* =========================================
+   CASE SELECTOR (Step 3 Tiles)
+   ========================================= */
+.tpm-case-selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+@media screen and (max-width: 600px) {
+    .tpm-case-selector {
+        grid-template-columns: 1fr; /* 1 στήλη στα κινητά */
+    }
+}
+
+/* =========================================
+   CASE SELECTOR (Step 3 Tiles)
+   ========================================= */
+.tpm-case-selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+@media screen and (max-width: 600px) {
+    .tpm-case-selector {
+        grid-template-columns: 1fr;
+    }
+}
+
+.tpm-tile-btn {
+    display: block;
+    width: 100%;
+    padding: 20px 15px;
+    background: #fff;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 16px;
+    color: #50575e;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-sizing: border-box; /* Ensures padding doesn't break the grid */
+}
+
+/* The hover state now gets that bold blue "selected" look */
+.tpm-tile-btn:hover {
+    border-color: #2271b1;
+    background: #f0f6fc;
+    color: #2271b1;
+    box-shadow: 0 0 0 1px #2271b1;
+}
+
+/* =========================================
+   SUBSTITUTION HOURS (Step 4 B)
+   ========================================= */
+/* 1. Break the parent containers out of the theme's 2/3 restriction */
+#tpm-modification-form, 
+#tpm-makeup-fields, 
+#tpm-form-fields-container {
+    width: 100% !important;
+    max-width: 100% !important; 
+    box-sizing: border-box !important;
+}
+
+/* 2. The Grid Container - FORCED ROW */
+.tpm-hours-grid {
+    display: flex !important;
+    flex-direction: row !important;  /* CRITICAL: Forces left-to-right flow, stopping the stack */
+    flex-wrap: wrap !important;      
+    justify-content: flex-start !important; 
+    gap: 20px !important;
+    width: 100% !important;
+    max-width: 100% !important;      
+    margin: 10px 0 20px 0 !important; 
+    padding: 20px !important;          
+    box-sizing: border-box !important;
+}
+
+/* 3. The 170px Tiles - HEIGHT CAPPED */
+.tpm-hours-grid label {
+    display: flex !important;          
+    flex-direction: row !important;    /* Keeps the checkbox and text side-by-side */
+    align-items: center !important;
+    flex: 0 0 170px !important;        /* Width basis */
+    width: 170px !important;           
+    max-width: 170px !important;       
+    height: auto !important;           /* CRITICAL: Kills the 170px vertical stretch */
+    min-height: 36px !important;       /* Gives them a consistent, neat height */
+    box-sizing: border-box !important; 
+    background: #fff !important;
+    padding: 8px 12px !important;      
+    border: 1px solid #ccd0d4 !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    font-size: 13px !important;     
+    line-height: 1.2 !important;
+    margin: 0 !important;
+    white-space: nowrap !important; 
+    overflow: hidden !important;       
+    clear: none !important;         
+    float: none !important;
+}
+
+.tpm-hours-grid label:hover {
+    background: #f0f6fc !important;
+}
+
+.tpm-hours-grid input[type="checkbox"] {
+    margin: 0 8px 0 0 !important;
+    display: inline-block !important;
+    flex-shrink: 0 !important;
+}
+
+/* Container for the file lists */
+.tpm-file-queue {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0 0;
+}
+
+/* Individual file row */
+.tpm-file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    color: #2271b1;
+    font-size: 0.9em;
+    font-weight: 600;
+}
+
+/* The 'X' delete button */
+.tpm-remove-file {
+    color: #d63638;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    padding: 2px 5px;
+}
+
+.tpm-remove-file:hover {
+    background: #f0f0f0;
+    border-radius: 3px;
+}
+
+.tpm-status-msg p {
+    margin: 5px 0 0 0;
+    font-size: 0.85em;
+    font-weight: bold;
+}
+
+/* Submissions Table Styling */
+.tpm-row-clickable:hover { 
+    background-color: #f0f6fb !important; 
+    cursor: pointer; 
+}
+
+.status-badge { 
+    padding: 3px 8px; 
+    border-radius: 3px; 
+    font-size: 11px; 
+    font-weight: bold; 
+    border: 1px solid; 
+    display: inline-block;
+}
+
+.status-approved { background: #e7f5ea; color: #185a1b; border-color: #c3e6cb; }
+.status-pending  { background: #fcf9e8; color: #856404; border-color: #ffeeba; }
+.status-rejected { background: #f8d7da; color: #721c24; border-color: #f5c6cb; }
+
+/* Modal Styling */
+#tpm-app-modal {
+    display: none; 
+    position: fixed; 
+    z-index: 9999; 
+    left: 0; 
+    top: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: rgba(0,0,0,0.5);
+}
+
+/* Make the modal container a Flexbox column */
+.tpm-modal-inner {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin: 5% auto;
+    width: 60%;          /* A bit wider for readability */
+    max-height: 85vh;    /* Prevents it from going off-screen */
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    overflow: hidden;    /* Critical: locks the inner content */
+}
+
+/* Now sections are defined by their flex behavior */
+#tpm-modal-header {
+    flex: 0 0 auto;      /* Header stays fixed size */
+    background: #f9f9f9;
+    border-bottom: 1px solid #ddd;
+    padding: 20px;
+}
+
+#tpm-modal-body {
+    flex: 1 1 auto;      /* Body takes all remaining space */
+    overflow-y: auto;    /* Only this part scrolls */
+    padding: 20px;
+}
+
+#tpm-modal-footer {
+    flex: 0 0 auto;      /* Footer stays fixed at bottom */
+    background: #f9f9f9;
+    border-top: 1px solid #ddd;
+    padding: 15px 20px;
+}
+
+/* Give padding back to the individual sections */
+.tpm-modal-section {
+    padding: 20px;
+}
+
+.tpm-modal-section { padding: 15px 0; border-bottom: 1px solid #eee; }
+.tpm-modal-section:last-child { border-bottom: none; }
+
+.tpm-modal-header-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.tpm-modal-header-grid div { margin-bottom: 5px; }
+
+.tpm-modal-actions { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-top: 10px; 
+}
+
+.tpm-button-group .button { margin-left: 10px; }
+
+#tpm_reject_reason { border: 1px solid #d63638; }
+
+.tpm-details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns */
+    gap: 15px;
+}
+
+.tpm-details-grid .full {
+    grid-column: span 2; /* Full width items */
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+#close-tpm-modal {
+    position: absolute;
+    left: 10px;
+    top: 5px;
+    cursor: pointer;
+    font-size: 28px;
+    color: #666;
+    z-index: 100;
+}
+
+#close-tpm-modal:hover { color: #000; }
+
+/* Add padding to the header so the title doesn't hit the X */
+#tpm-modal-header {
+    padding-left: 40px; 
+}
+
+.tpm-type-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* Color coding for the types */
+.tpm-type-cancel    { background: #fee2e2; color: #991b1b; } /* Soft Red */
+.tpm-type-makeup    { background: #dcfce7; color: #166534; } /* Soft Green */
+.tpm-type-fieldtrip { background: #dbeafe; color: #1e40af; } /* Soft Blue */
+
+/* Στυλ για απενεργοποιημένα κουμπιά στο modal */
+.tpm-modal-footer button:disabled {
+    background-color: #ccc !important;
+    border-color: #bbb !important;
+    color: #888 !important;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+#tpm_reject_reason[readonly] {
+    background-color: #f0f0f1;
+    color: #666;
+    border-color: #dcdcde;
+    cursor: not-allowed;
+}
