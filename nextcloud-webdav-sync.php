@@ -3,7 +3,7 @@
  * Plugin Name: Nextcloud WebDAV Sync
  * Description: Modular engine for chunked WebDAV uploads, file viewing, and management.
  * Version: 1.0.1
- * Author: johnvigl
+ * Author: johnvigl & dimitra
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
